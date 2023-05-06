@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<div class="body">
+
+    <div class="header">
+        <h1>
+            Yahtzee
+        </h1>
+    </div>
+
+    <div class='dice'>
+        <table>
+            <tr>
+            <td><img class="dice-btn dice-btn1" src = 'img/dice0.gif'></img></td>
+            <td><img class="dice-btn dice-btn2" src = 'img/dice0.gif'></img></td>
+            <td><img class="dice-btn dice-btn3" src = 'img/dice0.gif'></img></td>
+            <td><img class="dice-btn dice-btn4" src = 'img/dice0.gif'></img></td>
+            <td><img class="dice-btn dice-btn5" src = 'img/dice0.gif'></img></td></tr>
+        </table>
+    </div>
+    <div class="card">
+        <table>
+            <tr><td>1's<button class="card-btn ones"></button></td></tr>
+            <tr><td>2's<button class="card-btn twos"></button></td></tr>
+            <tr><td>3's<button class="card-btn threes"></button></td></tr>
+            <tr><td>4's<button class="card-btn fours"></button></td></tr>
+            <tr><td>5's<button class="card-btn fives"></button></td></tr>
+            <tr><td>6's<button class="card-btn sixes"></button></td></tr>
+            <tr><td>3 of a kind<button class="card-btn threeOfaKind"></button></td></tr>
+            <tr><td>4 of a kind<button class="card-btn fourOfaKind"></button></td></tr>
+            <tr><td>Yahtzee<button class="card-btn yahtzee"></button></td></tr>
+            <tr><td>Total<button class="card-btn total"></button></td></tr>
+        </table>
+    </div>
+    
+    <div class="roll">
+        <button class='roll-btn'>Roll</button>
+    </div>
+
+    
+    
+    <div class="new-game">
+        <button class="new-game-btn">New Game</button>
+    </div>
+
+</div>
+
+<script>
+    
+    //these arrays store the images for the dice to be called from later
+    const diceImg = ['img/dice0.gif','img/dice1.gif','img/dice2.gif','img/dice3.gif', 'img/dice4.gif', 'img/dice5.gif','img/dice6.gif']
+    const diceBlocked = ['img/diceX0.gif','img/diceX1.gif','img/diceX2.gif','img/diceX3.gif', 'img/diceX4.gif', 'img/diceX5.gif','img/diceX6.gif']
+    
+    //this array hold the information for each die
+    const currDice =[]
+    //this array stores which dice have been blocked and will not be re-rolled
+    const blockedList = [0,0,0,0,0]
+
+    let ones = 0;
+    let twos = 0;
+    let threes = 0;
+    let fours = 0;
+    let fives = 0;
+    let sixes = 0;
+    let threeOfaKind = 0;
+    let fourOfaKind = 0;
+    let yahtzee = 0;
+
+    rollCounter = 0;
+
+    //total calculator
+    function totalCalc() {
+        let total = ones + twos + threes + fours + fives + sixes + threeOfaKind + fourOfaKind + yahtzee;
+        document.querySelector(".total").innerHTML = total;
+    }
+
+    function roll() {
+        rollCounter++;
+            if(rollCounter<=3){            
+            for(var i=0; i<5; i++) {
+                if(blockedList[i] == 0){
+                    currDice[i] = Math.floor(Math.random()*(7-1)+1);
+                }
+                if(blockedList[i] == 1){
+                    console.log('log')
+                }
+            }
+            console.log(currDice);
+            }
+            else
+            {
+                document.querySelector('.roll-btn').innerHTML = "Choose Score"
+            }
+    }
+
+    function displayDice() {
+        for (var i=0; i < 5; i++){
+            if(blockedList[i] == 0){
+                document.querySelector(".dice-btn"+ (i+1)).src = diceImg[currDice[i]];
+            }
+            else {
+                document.querySelector(".dice-btn"+ (i+1)).src = diceBlocked[currDice[i]];
+
+            }
+        }
+    }
+
+
+    function clearDice() {
+        for(var i=0; i<5; i++){ 
+            document.querySelector(".dice-btn"+(i+1)).src = "img/dice0.gif";
+            blockedList[i] = 0;
+        }
+        
+        rollCounter = 0;
+        document.querySelector('.roll-btn').innerHTML = "Roll";
+
+        }
+
+    function dupeCheck() {
+        let dupeNum = 0;
+
+        const sortDice = currDice.sort();
+        for(var i = 0; i<5; i++){
+            if(sortDice[i] === sortDice[i+1])
+                dupeNum++;  
+        }
+        if(dupeNum == 2) {
+            return 3;
+        }
+        if (dupeNum == 3) {
+            return 4;
+        }
+        if (dupeNum == 4) {
+            return 5
+        }
+    }
+    //New Game
+
+    function reset() {
+        document.location.reload();
+    }
+
+
+    
+    
+    
+    //Main Function
+
+    
+    
+    
+    
+    
+    document.querySelector('.new-game-btn').addEventListener('click', () => {
+        reset();
+    })
+
+    document.querySelector('.roll-btn').addEventListener('click', () => {
+        roll();
+        displayDice(currDice);
+    });
+
+
+   
+   
+    //Block and unblock dice
+    document.querySelector(".dice-btn1").addEventListener("click", () => {
+        
+        if(blockedList[0] == 0) {
+            blockedList[0] = 1;
+            document.querySelector(".dice-btn1").src = diceBlocked[(currDice[0])];
+        } 
+        else if(blockedList[0] == 1) {
+            blockedList[0] = 0;
+            console.log("clicked")
+            document.querySelector(".dice-btn1").src = diceImg[(currDice[0])];
+        }
+    });
+
+    document.querySelector(".dice-btn2").addEventListener("click", () => {
+        
+        if(blockedList[1] == 0) {
+            blockedList[1] = 1;
+            document.querySelector(".dice-btn2").src = diceBlocked[(currDice[1])];
+            console.log(blockedList)
+
+        } 
+        else if(blockedList[1] == 1) {
+            blockedList[1] = 0;
+            console.log("clicked")
+            document.querySelector(".dice-btn2").src = diceImg[(currDice[1])];
+        }
+    });
+
+    document.querySelector(".dice-btn3").addEventListener("click", () => {
+        
+        if(blockedList[2] == 0) {
+            blockedList[2] = 1;
+            document.querySelector(".dice-btn3").src = diceBlocked[(currDice[2])];
+        } 
+        else if(blockedList[2] == 1) {
+            blockedList[2] = 0;
+            console.log("clicked")
+            document.querySelector(".dice-btn3").src = diceImg[(currDice[2])];
+        }
+    });
+    document.querySelector(".dice-btn4").addEventListener("click", () => {
+        
+        if(blockedList[3] == 0) {
+            blockedList[3] = 1;
+            document.querySelector(".dice-btn4").src = diceBlocked[(currDice[3])];
+        } 
+        else if(blockedList[3] == 1) {
+            blockedList[3] = 0;
+            console.log("clicked")
+            document.querySelector(".dice-btn4").src = diceImg[(currDice[3])];
+        }
+    });
+    document.querySelector(".dice-btn5").addEventListener("click", () => {
+        
+        if(blockedList[4] == 0) {
+            blockedList[4] = 1;
+            document.querySelector(".dice-btn5").src = diceBlocked[(currDice[4])];
+        } 
+        else if(blockedList[4] == 1) {
+            blockedList[4] = 0;
+            console.log("clicked")
+            document.querySelector(".dice-btn5").src = diceImg[(currDice[4])];
+        }
+    });
+
+    
+    
+            //SCORE CARD BUTTONS
+
+  
+
+//ones score event listeners
+document.querySelector(".ones").addEventListener('click', () => {
+        var sum = 0;
+        for(var i=0; i<=4; i++) {
+            if(currDice[i] == 1) {
+                sum += 1;
+            }
+            else {
+            }
+        }
+        document.querySelector(".ones").innerHTML = sum;
+        ones = sum;
+        totalCalc();
+        clearDice();
+    });
+
+//twos score event listeners
+    document.querySelector(".twos").addEventListener('click', () => {
+        var sum = 0;
+        for(var i=0; i<=4; i++) {
+            if(currDice[i] == 2) {
+                sum += 2;
+            }
+            else {
+            }
+        }
+        document.querySelector(".twos").innerHTML = sum;
+        twos = sum;
+        totalCalc();
+        clearDice();
+    });
+
+//Threes score event listeners
+    document.querySelector('.threes').addEventListener('click', () => {
+        var sum = 0;
+        for(var i=0; i<=4; i++) {
+            if(currDice[i] == 3) {
+                sum += 3;
+            }
+            else {
+            }
+        }
+        document.querySelector(".threes").innerHTML = sum;
+        threes = sum;
+        totalCalc();
+        clearDice();
+    });
+
+//Fours score event listeners
+document.querySelector(".fours").addEventListener('click', () => {
+        var sum = 0;
+        for(var i=0; i<=4; i++) {
+            if(currDice[i] == 4) {
+                sum += 4;
+            }
+            else {
+            }
+        }
+        document.querySelector(".fours").innerHTML = sum;
+        fours = sum;
+        totalCalc();
+        clearDice();
+    });
+
+//Fives score event listeners
+document.querySelector(".fives").addEventListener('click', () => {
+        var sum = 0;
+        for(var i=0; i<=4; i++) {
+            if(currDice[i] == 5) {
+                sum += 5;
+            }
+            else {
+            }
+        }
+        document.querySelector(".fives").innerHTML = sum;
+        fives = sum;
+        totalCalc();
+        clearDice();
+    });
+    
+//Sixes score event listeners
+document.querySelector(".sixes").addEventListener('click', () => {
+        var sum = 0;
+        for(var i=0; i<=4; i++) {
+            if(currDice[i] == 6) {
+                sum += 6;
+            }
+            else {
+            }
+        }
+        document.querySelector(".sixes").innerHTML = sum;
+        sixes = sum;
+        totalCalc();
+        clearDice();
+    });
+
+//3 of a kind event listener
+document.querySelector(".threeOfaKind").addEventListener('click', () => {
+    var sum = 0;
+    var duplicates = dupeCheck();
+    if( duplicates = 3)
+        for(var i=0;i<5;i++) {
+            sum += currDice[i];
+        }
+    else{
+        sum = 0;
+    }
+    document.querySelector(".threeOfaKind").innerHTML = sum;
+        threeOfaKind = sum;
+        totalCalc();
+        clearDice();
+
+});
+//4 of a kind event listener
+document.querySelector(".fourOfaKind").addEventListener('click', () => {
+    var sum = 0;
+    var duplicates = dupeCheck();
+    if( duplicates = 4)
+        for(var i=0;i<5;i++) {
+            sum += currDice[i];
+        }
+    else{
+        sum = 0;
+    }
+    document.querySelector(".fourOfaKind").innerHTML = sum;
+        fourOfaKind = sum;
+        totalCalc();
+        clearDice();
+
+});
+
+//Yahtzee event listener
+document.querySelector(".yahtzee").addEventListener('click', () => {
+    var sum = 0;
+    var duplicates = dupeCheck();
+    if( duplicates = 5)
+        for(var i=0;i<5;i++) {
+            sum += currDice[i];
+        }
+    else{
+        sum = 0;
+    }
+    document.querySelector(".yahtzee").innerHTML = sum;
+        yahtzee = sum;
+        totalCalc();
+        clearDice();
+
+});
+
+</script>

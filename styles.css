@@ -1,0 +1,75 @@
+
+*{
+    --primary: rgb(172,176,249);
+    --secondary: rgb(77,28,194);
+}
+
+.body {
+    background-color: rgb(233,233,233);
+    width:100vw;
+    height: 100vh;
+}
+
+.header {
+    font-size:large;
+    text-align: center;
+    background-color: white;
+    height:60px;
+
+}
+
+
+/*Dice*/
+
+.dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    margin-top:20px;
+}
+.dice-btn {
+    height:50px;
+    width:50px;
+}
+
+/*Score card*/
+
+.card {
+margin-left:30px;
+margin-top:40px;
+text-align: right;
+
+}
+
+.card-btn {
+margin-left: 15px;
+height:25px;
+width:40px;
+border-radius: 0px;
+border-width: 1px;
+background-color: var(--primary);
+
+}
+
+/*Roll button*/
+
+.roll {
+position:absolute;
+right:120px;
+top:300px;
+}
+
+.roll-btn{
+    background-color: var(--secondary);
+    color:white;
+}
+
+
+/*New game*/
+
+.new-game {
+position:absolute;
+right:100px;
+top:400px;
+}
